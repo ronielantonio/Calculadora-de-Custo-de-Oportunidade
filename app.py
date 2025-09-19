@@ -6,55 +6,52 @@ html_code = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Financeira</title>
+    <title>Comparativo Financeiro Profissional</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #2E86DE;
-            --secondary-color: #A3A3A3;
+            --primary-color: #0077B6;
+            --secondary-color: #6c757d;
             --accent-color: #F1C40F;
-            --success-color: #27AE60;
+            --success-color: #2ECC71;
             --danger-color: #E74C3C;
-            --bg-dark: #2C3E50;
-            --bg-light: #F4F6F9;
-            --text-dark: #34495E;
-            --text-light: #ECF0F1;
+            --bg-start: #E0E0E0;
+            --bg-end: #F0F0F0;
+            --text-dark: #2c3e50;
+            --text-light: #ffffff;
             --card-bg: #FFFFFF;
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--bg-light);
-            color: var(--text-dark);
+            font-family: 'Poppins', sans-serif;
             margin: 0;
-            padding: 1rem;
+            padding: 0;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center;
             min-height: 100vh;
+            background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
+            color: var(--text-dark);
         }
 
         .container {
             background-color: var(--card-bg);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            max-width: 900px;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 950px;
             width: 100%;
+            margin: 20px;
         }
 
-        h1, h3, h4 {
+        h1 {
             color: var(--primary-color);
             text-align: center;
-        }
-        
-        h1 {
+            font-weight: 700;
             margin-bottom: 0.5rem;
         }
-        
+
         p.subtitle {
             text-align: center;
             color: var(--secondary-color);
@@ -67,62 +64,71 @@ html_code = """
             margin-bottom: 2rem;
             flex-wrap: wrap;
         }
-        
+
         .tab-btn {
-            background-color: #EFEFEF;
+            background-color: #eceff1;
             border: none;
-            padding: 12px 18px;
+            padding: 12px 24px;
             font-size: 1rem;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
             margin: 5px;
-            border-radius: 8px;
+            border-radius: 10px;
         }
-        
+
         .tab-btn:hover {
-            background-color: #DEDEDE;
+            background-color: #cfd8dc;
+            transform: translateY(-2px);
         }
-        
+
         .tab-btn.active {
             background-color: var(--primary-color);
             color: var(--text-light);
-            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0, 119, 182, 0.3);
+            transform: translateY(-2px);
         }
-        
+
         .tab-content {
             display: none;
+            animation: fadeIn 0.5s ease-in-out;
         }
-        
+
         .tab-content.active {
             display: block;
         }
-        
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .form-group {
             margin-bottom: 1.5rem;
         }
-        
+
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
-            font-weight: bold;
+            font-weight: 600;
             color: var(--text-dark);
         }
-        
+
         .form-group input {
             width: calc(100% - 22px);
-            padding: 11px;
-            border: 1px solid #ced4da;
-            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid #dcdfe6;
+            border-radius: 10px;
             font-size: 1rem;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
         }
-        
+
         .form-group input:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 5px rgba(46, 134, 222, 0.5);
+            box-shadow: 0 0 8px rgba(0, 119, 182, 0.2);
         }
-        
+
         .button-group {
             display: flex;
             justify-content: space-between;
@@ -130,140 +136,154 @@ html_code = """
             margin-top: 2rem;
             flex-wrap: wrap;
         }
-        
+
         .btn {
-            padding: 12px 24px;
+            padding: 14px 28px;
             font-size: 1rem;
+            font-weight: 600;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
             flex-grow: 1;
             min-width: 150px;
         }
-        
+
         .btn-primary {
             background-color: var(--primary-color);
             color: var(--text-light);
         }
-        
+
         .btn-primary:hover {
-            background-color: #21618C;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            background-color: #005f8e;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 119, 182, 0.3);
         }
-        
+
         .btn-secondary {
             background-color: var(--secondary-color);
             color: var(--text-light);
         }
-        
+
         .btn-secondary:hover {
-            background-color: #7B7B7B;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .summary, .cdi-card, .comparison-card, .explanation {
-            background-color: #F8F9FA;
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-            text-align: center;
+            background-color: #5a6268;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(108, 117, 125, 0.2);
         }
 
-        .summary p {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin: 0.5rem 0;
+        .summary, .cdi-card, .comparison-card, .explanation {
+            background-color: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+
+        .summary h3, .comparison-card h4 {
+            font-weight: 600;
+            margin-top: 0;
             color: var(--text-dark);
         }
 
-        .summary p.total-juros {
-            color: var(--primary-color);
+        .summary p {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
         }
-
+        
         .summary p.final-balance {
             color: var(--success-color);
         }
         
+        .summary p.total-juros {
+            color: var(--primary-color);
+        }
+        
+        .summary p span, .comparison-card p span {
+            display: block;
+        }
+
         table {
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
             overflow: hidden;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
         }
-        
+
         table th, table td {
-            padding: 12px;
+            padding: 15px;
             text-align: left;
-            border-bottom: 1px solid #EAEAEA;
+            border-bottom: 1px solid #e9ecef;
         }
-        
+
         table th {
             background-color: var(--primary-color);
             color: var(--text-light);
-            font-weight: 500;
-            font-size: 0.9rem;
+            font-weight: 600;
+            font-size: 0.95rem;
         }
-        
+
         table tbody tr:nth-child(even) {
-            background-color: #F8F9FA;
+            background-color: #f8f9fa;
         }
-        
-        .explanation h3 {
-            color: var(--primary-color);
+
+        .explanation ul {
+            text-align: left;
+            padding-left: 20px;
         }
-        
-        .explanation p {
-            line-height: 1.6;
-        }
-        
+
         .cdi-card {
-            background-color: #EAF2F8;
-            border: 1px solid #B0C4DE;
-            text-align: center;
+            background-color: #ecf0f1;
+            border: 1px solid #bdc3c7;
         }
-        
+
         .cdi-card h4 {
-            color: var(--primary-color);
+            color: var(--secondary-color);
         }
         
         .cdi-card a {
             color: var(--primary-color);
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 600;
         }
         
         .comparison-card {
-            background-color: #E8F6F3;
-            border: 1px solid #52BE80;
-        }
-        
-        .comparison-card h4 {
-            color: var(--success-color);
+            background-color: #e8f6f3;
+            border: 1px solid #a2d9ce;
         }
         
         .comparison-card .winner {
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: var(--success-color);
+            margin-top: 1rem;
         }
         
-        .chart-container {
-            margin-top: 2rem;
+        .comparison-card .loser {
+            color: var(--danger-color);
         }
-
+        
+        .flex-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .flex-row input[type="checkbox"] {
+            width: auto;
+            transform: scale(1.2);
+            margin: 0;
+        }
+        
         @media (max-width: 768px) {
             .container {
-                padding: 1rem;
-                margin: 0.5rem;
+                padding: 1.5rem;
             }
             h1 {
-                font-size: 1.5rem;
+                font-size: 1.8rem;
             }
             .tab-btn {
                 font-size: 0.9rem;
@@ -271,27 +291,31 @@ html_code = """
             }
             .btn {
                 width: 100%;
+                min-width: unset;
             }
             .button-group {
                 flex-direction: column;
             }
-            table, .summary {
-                font-size: 0.9rem;
+            table th, table td {
+                padding: 10px;
+                font-size: 0.8rem;
+            }
+            .summary p {
+                font-size: 1.2rem;
             }
         }
-        
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Calculadora Financeira</h1>
-        <p class="subtitle">Análise de Juros, Saques e Custo de Oportunidade</p>
+        <h1>Comparativo Financeiro</h1>
+        <p class="subtitle">Análise de Juros com Opção de Saques Mensais e Custo de Oportunidade</p>
 
         <div class="tab-buttons">
-            <button class="tab-btn active" onclick="showTab('tab-saques')">Juros com Saques</button>
-            <button class="tab-btn" onclick="showTab('tab-oportunidade')">Custo de Oportunidade</button>
-            <button class="tab-btn" onclick="showTab('tab-explanation')">Explicação</button>
+            <button class="tab-btn active" onclick="showTab('tab-saques', this)">Juros com Saques</button>
+            <button class="tab-btn" onclick="showTab('tab-oportunidade', this)">Custo de Oportunidade</button>
+            <button class="tab-btn" onclick="showTab('tab-explanation', this)">Explicação</button>
         </div>
 
         <div id="tab-saques" class="tab-content active">
@@ -438,19 +462,24 @@ html_code = """
     </div>
 
     <script>
-        // Variável global para armazenar a instância do gráfico, permitindo que ela seja destruída
         let myChartInstance = null;
+        // Obtenha as variáveis CSS
+        const style = getComputedStyle(document.body);
+        const primaryColor = style.getPropertyValue('--primary-color');
+        const successColor = style.getPropertyValue('--success-color');
+        const textDark = style.getPropertyValue('--text-dark');
+        const gridColor = style.getPropertyValue('--bg-start');
 
         function formatarMoeda(valor) {
             return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor);
         }
 
-        function showTab(tabId) {
+        function showTab(tabId, element) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
 
             document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
+            element.classList.add('active');
         }
 
         function toggleCdiRate(tab) {
@@ -592,19 +621,19 @@ html_code = """
                         {
                             label: 'Ganhos Acumulados - Opção Parcelada',
                             data: chartGanhosParcelado,
-                            borderColor: var(--primary-color),
-                            backgroundColor: 'rgba(46, 134, 222, 0.1)',
+                            borderColor: primaryColor,
+                            backgroundColor: 'rgba(0, 119, 182, 0.1)',
                             borderWidth: 2,
-                            pointBackgroundColor: var(--primary-color),
+                            pointBackgroundColor: primaryColor,
                             tension: 0.3
                         },
                         {
                             label: 'Ganhos Acumulados - Opção à Vista (com desconto)',
                             data: chartGanhosVista,
-                            borderColor: var(--success-color),
-                            backgroundColor: 'rgba(39, 174, 96, 0.1)',
+                            borderColor: successColor,
+                            backgroundColor: 'rgba(46, 204, 113, 0.1)',
                             borderWidth: 2,
-                            pointBackgroundColor: var(--success-color),
+                            pointBackgroundColor: successColor,
                             tension: 0.3
                         }
                     ]
@@ -618,10 +647,10 @@ html_code = """
                             title: {
                                 display: true,
                                 text: 'Ganhos Acumulados (R$)',
-                                color: var(--text-dark)
+                                color: textDark
                             },
                             grid: {
-                                color: '#EAEAEA'
+                                color: gridColor
                             },
                             ticks: {
                                 callback: function(value, index, values) {
@@ -633,10 +662,10 @@ html_code = """
                             title: {
                                 display: true,
                                 text: 'Mês',
-                                color: var(--text-dark)
+                                color: textDark
                             },
                             grid: {
-                                color: '#EAEAEA'
+                                color: gridColor
                             }
                         }
                     },
