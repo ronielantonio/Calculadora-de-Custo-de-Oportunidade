@@ -6,225 +6,280 @@ html_code = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Financeira Completa</title>
+    <title>Calculadora Financeira</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #007bff;
-            --secondary-color: #6c757d;
-            --success-color: #28a745;
-            --danger-color: #dc3545;
-            --info-color: #17a2b8;
-            --bg-light: #f8f9fa;
-            --bg-dark: #343a40;
-            --text-dark: #212529;
-            --text-light: #f8f9fa;
-            --card-bg: #fff;
+            --primary-color: #2E86DE;
+            --secondary-color: #A3A3A3;
+            --accent-color: #F1C40F;
+            --success-color: #27AE60;
+            --danger-color: #E74C3C;
+            --bg-dark: #2C3E50;
+            --bg-light: #F4F6F9;
+            --text-dark: #34495E;
+            --text-light: #ECF0F1;
+            --card-bg: #FFFFFF;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             background-color: var(--bg-light);
             color: var(--text-dark);
             margin: 0;
-            padding: 2rem;
+            padding: 1rem;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
         }
+
         .container {
             background-color: var(--card-bg);
-            padding: 2.5rem;
+            padding: 2rem;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
             width: 100%;
         }
-        h1 {
+
+        h1, h3, h4 {
             color: var(--primary-color);
             text-align: center;
+        }
+        
+        h1 {
             margin-bottom: 0.5rem;
         }
+        
         p.subtitle {
             text-align: center;
             color: var(--secondary-color);
             margin-bottom: 2rem;
         }
+
         .tab-buttons {
             display: flex;
             justify-content: center;
             margin-bottom: 2rem;
+            flex-wrap: wrap;
         }
+        
         .tab-btn {
-            background-color: #e9ecef;
+            background-color: #EFEFEF;
             border: none;
-            padding: 12px 24px;
-            font-size: 1.1rem;
+            padding: 12px 18px;
+            font-size: 1rem;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
+            margin: 5px;
+            border-radius: 8px;
         }
+        
         .tab-btn:hover {
-            background-color: #dee2e6;
+            background-color: #DEDEDE;
         }
+        
         .tab-btn.active {
             background-color: var(--primary-color);
             color: var(--text-light);
-            border-radius: 6px 6px 0 0;
+            font-weight: 500;
         }
+        
         .tab-content {
             display: none;
         }
+        
         .tab-content.active {
             display: block;
         }
+        
         .form-group {
             margin-bottom: 1.5rem;
         }
+        
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: bold;
+            color: var(--text-dark);
         }
+        
         .form-group input {
-            width: calc(100% - 20px);
-            padding: 10px;
+            width: calc(100% - 22px);
+            padding: 11px;
             border: 1px solid #ced4da;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 5px rgba(46, 134, 222, 0.5);
+        }
+        
         .button-group {
             display: flex;
             justify-content: space-between;
             gap: 1rem;
             margin-top: 2rem;
+            flex-wrap: wrap;
         }
+        
         .btn {
             padding: 12px 24px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            transition: all 0.3s ease;
             flex-grow: 1;
+            min-width: 150px;
         }
+        
         .btn-primary {
             background-color: var(--primary-color);
             color: var(--text-light);
         }
+        
         .btn-primary:hover {
-            background-color: #0056b3;
+            background-color: #21618C;
             transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
+        
         .btn-secondary {
             background-color: var(--secondary-color);
             color: var(--text-light);
         }
+        
         .btn-secondary:hover {
-            background-color: #5a6268;
+            background-color: #7B7B7B;
             transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
-        #results {
-            margin-top: 2rem;
-            border-top: 2px solid var(--secondary-color);
-            padding-top: 2rem;
-            display: none; /* Escondido por padrão */
-        }
-        .summary {
-            background-color: #e9ecef;
+        
+        .summary, .cdi-card, .comparison-card, .explanation {
+            background-color: #F8F9FA;
             padding: 1.5rem;
-            border-radius: 8px;
+            border-radius: 12px;
             margin-bottom: 1.5rem;
             text-align: center;
         }
-        .summary h3 {
-            margin: 0 0 1rem;
-            color: var(--primary-color);
-        }
+
         .summary p {
-            font-size: 1.4rem;
-            font-weight: bold;
-            margin: 0;
-            color: var(--success-color);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+            color: var(--text-dark);
         }
+
         .summary p.total-juros {
             color: var(--primary-color);
         }
-        .chart-container {
-            margin-bottom: 2rem;
+
+        .summary p.final-balance {
+            color: var(--success-color);
         }
+        
         table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
             margin-top: 1rem;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         }
+        
         table th, table td {
             padding: 12px;
             text-align: left;
-            border-bottom: 1px solid #dee2e6;
+            border-bottom: 1px solid #EAEAEA;
         }
+        
         table th {
-            background-color: #e9ecef;
-            color: var(--text-dark);
-            font-weight: bold;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            font-weight: 500;
             font-size: 0.9rem;
         }
+        
+        table tbody tr:nth-child(even) {
+            background-color: #F8F9FA;
+        }
+        
         .explanation h3 {
             color: var(--primary-color);
         }
+        
         .explanation p {
             line-height: 1.6;
         }
-        .explanation ul {
-            padding-left: 20px;
-        }
-        .explanation li {
-            margin-bottom: 10px;
-        }
+        
         .cdi-card {
-            background-color: #e9ecef;
-            padding: 1.5rem;
-            border-radius: 8px;
+            background-color: #EAF2F8;
+            border: 1px solid #B0C4DE;
             text-align: center;
-            margin-bottom: 2rem;
         }
+        
         .cdi-card h4 {
-            margin-top: 0;
+            color: var(--primary-color);
         }
+        
         .cdi-card a {
             color: var(--primary-color);
             text-decoration: none;
             font-weight: bold;
         }
-        .flex-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+        
         .comparison-card {
-            background-color: #e9ecef;
-            padding: 1.5rem;
-            border-radius: 8px;
-            text-align: center;
-            margin-bottom: 1.5rem;
+            background-color: #E8F6F3;
+            border: 1px solid #52BE80;
         }
+        
         .comparison-card h4 {
-            margin-top: 0;
-            color: var(--info-color);
-        }
-        .comparison-card p {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin: 0.5rem 0;
-        }
-        .comparison-card .winner {
             color: var(--success-color);
-            font-size: 1.4rem;
         }
-        .comparison-card .loser {
-            color: var(--danger-color);
-            font-size: 1.4rem;
+        
+        .comparison-card .winner {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--success-color);
         }
+        
+        .chart-container {
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+                margin: 0.5rem;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            .tab-btn {
+                font-size: 0.9rem;
+                padding: 10px 15px;
+            }
+            .btn {
+                width: 100%;
+            }
+            .button-group {
+                flex-direction: column;
+            }
+            table, .summary {
+                font-size: 0.9rem;
+            }
+        }
+        
     </style>
 </head>
 <body>
@@ -260,7 +315,7 @@ html_code = """
                     <div class="flex-row">
                         <label for="monthly-rate-saques">Taxa Mensal (%)</label>
                         <input type="checkbox" id="use-cdi-saques" onclick="toggleCdiRate('saques')">
-                        <label for="use-cdi-saques">Usar 100% do CDI</label>
+                        <label for="use-cdi-saques" style="font-weight: normal; margin-left: 5px;">Usar 100% do CDI</label>
                     </div>
                     <input type="number" id="monthly-rate-saques" value="1" step="0.01" required>
                 </div>
@@ -283,7 +338,7 @@ html_code = """
             <div id="results-saques" style="display: none;">
                 <div class="summary">
                     <h3>Resumo Final</h3>
-                    <p>Saldo Final: <span id="final-balance-saques"></span></p>
+                    <p class="final-balance">Saldo Final: <span id="final-balance-saques"></span></p>
                     <p class="total-juros">Juros Totais Acumulados: <span id="total-juros-saques"></span></p>
                 </div>
 
@@ -327,7 +382,7 @@ html_code = """
                     <div class="flex-row">
                         <label for="monthly-rate-oportunidade">Taxa Mensal (%)</label>
                         <input type="checkbox" id="use-cdi-oportunidade" onclick="toggleCdiRate('oportunidade')">
-                        <label for="use-cdi-oportunidade">Usar 100% do CDI</label>
+                        <label for="use-cdi-oportunidade" style="font-weight: normal; margin-left: 5px;">Usar 100% do CDI</label>
                     </div>
                     <input type="number" id="monthly-rate-oportunidade" value="1" step="0.01" required>
                 </div>
@@ -391,11 +446,9 @@ html_code = """
         }
 
         function showTab(tabId) {
-            // Remove a classe 'active' de todas as abas e botões
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
 
-            // Adiciona a classe 'active' à aba e ao botão clicado
             document.getElementById(tabId).classList.add('active');
             event.target.classList.add('active');
         }
@@ -417,7 +470,6 @@ html_code = """
         }
 
         function calcularJuros() {
-            // 1. Coletar e validar os valores dos inputs
             const initialPrincipal = parseFloat(document.getElementById('initial-principal-saques').value);
             const monthlyWithdrawal = parseFloat(document.getElementById('monthly-withdrawal-saques').value);
             let monthlyRate;
@@ -441,7 +493,6 @@ html_code = """
                 return;
             }
 
-            // 2. Cenário A: Juros com Saques
             let currentBalance = initialPrincipal;
             let totalInterest = 0;
             const logData = [];
@@ -461,12 +512,11 @@ html_code = """
             }
             const finalBalance = currentBalance;
 
-            // 3. Exibir os resultados na interface
             document.getElementById('final-balance-saques').textContent = formatarMoeda(finalBalance);
             document.getElementById('total-juros-saques').textContent = formatarMoeda(totalInterest);
 
             const tableBody = document.getElementById('monthly-log-body-saques');
-            tableBody.innerHTML = ''; // Limpa a tabela anterior
+            tableBody.innerHTML = '';
 
             logData.forEach(data => {
                 const row = tableBody.insertRow();
@@ -480,7 +530,6 @@ html_code = """
         }
 
         function analisarOportunidade() {
-            // 1. Coletar e validar os valores dos inputs
             const initialPrincipal = parseFloat(document.getElementById('initial-principal-oportunidade').value);
             const monthlyWithdrawal = parseFloat(document.getElementById('monthly-withdrawal-oportunidade').value);
             const discountRate = parseFloat(document.getElementById('discount-rate-oportunidade').value) / 100;
@@ -505,7 +554,6 @@ html_code = """
                 return;
             }
 
-            // 2. Cenário A: Compra Parcelada
             let currentBalance = initialPrincipal;
             let totalInterestParcelado = 0;
             const chartLabels = ["Início"];
@@ -520,7 +568,6 @@ html_code = """
                 chartGanhosParcelado.push(totalInterestParcelado);
             }
 
-            // 3. Cenário B: Compra à Vista (com desconto)
             const discountedValue = initialPrincipal * discountRate;
             let currentGainVista = discountedValue;
             const chartGanhosVista = [0];
@@ -532,7 +579,6 @@ html_code = """
                 chartGanhosVista.push(currentGainVista);
             }
             
-            // 4. Exibir os resultados
             if (myChartInstance) {
                 myChartInstance.destroy();
             }
@@ -546,35 +592,51 @@ html_code = """
                         {
                             label: 'Ganhos Acumulados - Opção Parcelada',
                             data: chartGanhosParcelado,
-                            borderColor: '#007bff',
-                            backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                            borderColor: var(--primary-color),
+                            backgroundColor: 'rgba(46, 134, 222, 0.1)',
                             borderWidth: 2,
-                            pointBackgroundColor: '#007bff'
+                            pointBackgroundColor: var(--primary-color),
+                            tension: 0.3
                         },
                         {
                             label: 'Ganhos Acumulados - Opção à Vista (com desconto)',
                             data: chartGanhosVista,
-                            borderColor: '#28a745',
-                            backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                            borderColor: var(--success-color),
+                            backgroundColor: 'rgba(39, 174, 96, 0.1)',
                             borderWidth: 2,
-                            pointBackgroundColor: '#28a745'
+                            pointBackgroundColor: var(--success-color),
+                            tension: 0.3
                         }
                     ]
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: true,
                     scales: {
                         y: {
                             beginAtZero: true,
                             title: {
                                 display: true,
-                                text: 'Ganhos Acumulados (R$)'
+                                text: 'Ganhos Acumulados (R$)',
+                                color: var(--text-dark)
+                            },
+                            grid: {
+                                color: '#EAEAEA'
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return formatarMoeda(value);
+                                }
                             }
                         },
                         x: {
                             title: {
                                 display: true,
-                                text: 'Mês'
+                                text: 'Mês',
+                                color: var(--text-dark)
+                            },
+                            grid: {
+                                color: '#EAEAEA'
                             }
                         }
                     },
@@ -625,7 +687,6 @@ html_code = """
             toggleCdiRate(formId === 'saques-form' ? 'saques' : 'oportunidade');
         }
 
-        // Garante que a primeira aba de formulário seja a padrão
         document.addEventListener('DOMContentLoaded', () => {
             toggleCdiRate('saques');
             toggleCdiRate('oportunidade');
@@ -635,4 +696,5 @@ html_code = """
 </html>
 """
 
+st.set_page_config(layout="wide")
 st.components.v1.html(html_code, height=1000, scrolling=True)
